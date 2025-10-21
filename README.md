@@ -3,7 +3,7 @@
 [中文版](./README_Zh-Hans.md)
 
 ## 📘 Overview
-This repository contains a **private and personal workflow** designed only for **debugging and testing** purposes.  
+This repository contains a **private and personal workflow** designed only for **testing,compiling and build big project** purposes.  
 It allows the repository owner to start an **interactive SSH debug session** inside a GitHub Actions runner,  
 and optionally **upload temporary build artifacts** for personal analysis.
 
@@ -12,7 +12,7 @@ The workflow file `.github/workflows/ssh.yml` provides:
 - ✅ On-demand manual trigger (`workflow_dispatch`)
 - 🔧 One-time SSH access to the runner (for debugging)
 - 📦 Automatic packaging and upload of the `./Upload` directory (if it exists)
-- ⏳ Artifacts are automatically deleted after 30 days
+- ⏳ Artifacts are automatically deleted after 90 days
 
 No automatic deployment, data collection, or persistent connection is performed.
 
