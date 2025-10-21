@@ -1,30 +1,37 @@
-name: SSH
+name: SSH Debug & Upload
 
 on:
-#  push:
-#    branches: [ "main" ]
-#  pull_request:
-#    branches: [ "main" ]
-
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
-      - uses: actions/checkout@v4
 
-      - name: Setup Debug Session
+    steps:
+      # 1️⃣ 检出仓库代码
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2️⃣ 启动 SSH 调试会话（适合你自己连接调试）
+      - name: Setup SSH Debug Session
         uses: csexton/debugger-action@master
 
+      # 3️⃣ 打包 ./Upload 文件夹（可选）
       - name: Compress Upload folder
+        if: always()  # 即使调试结束也执行
         run: |
           mkdir -p artifacts
-          zip -r artifacts/Upload.zip ./Upload
+          if [ -d "./Upload" ]; then
+            zip -r artifacts/Upload.zip ./Upload
+          else
+            echo "⚠️ 没有找到 ./Upload 文件夹，跳过打包。"
+          fi
 
-      - name: Upload What I Want
+      # 4️⃣ 上传产物到 GitHub（可在 Actions 页面下载）
+      - name: Upload artifact
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: My Temporary Files
-          path: |
-            path: artifacts/Upload.zip
-          retention-days: 90
+          name: My-Temporary-Files
+          path: artifacts/Upload.zip
+          retention-days: 30
